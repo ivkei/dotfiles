@@ -22,6 +22,7 @@ vim.opt.wrap = false
 
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
+vim.opt.ignorecase = true
 
 vim.opt.termguicolors = true
 
@@ -33,3 +34,4 @@ vim.opt.updatetime = 50
 
 vim.g.mapleader = " "
 
+vim.opt.clipboard = 'unnamedplus'

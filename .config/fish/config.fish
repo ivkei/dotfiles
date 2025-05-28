@@ -9,6 +9,5 @@ export CC=$(which clang)
 export CXX=$(which clang++)
 
 function fish_greeting
-  cat ~/sreminders.txt
-  cat ~/plans.txt
+  cat ~/reminders.txt
 end
