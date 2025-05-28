@@ -38,7 +38,6 @@
     }
   },
   "cava": {
-    //"cava_config": "/home/ivan/.config/cava/config",
     "framerate": 30,
     "autosens": 1,
     "sensitivity": 1.8,
@@ -60,7 +59,6 @@
                }
     },
 	"network": {
-		// "interface": "wlp2*", // (Optional) To force the use of this interface
 		"format-wifi": "",
 		"format-ethernet": "",
 		"tooltip-format": "{essid} ({signalStrength}%)",
