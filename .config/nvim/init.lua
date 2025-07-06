@@ -35,3 +35,57 @@ vim.opt.updatetime = 50
 vim.g.mapleader = " "
 
 vim.opt.clipboard = 'unnamedplus'
+
+vim.opt.signcolumn = 'no'
+
+-- Split on startup
+--vim.api.nvim_create_augroup("StartupSplits", { clear = true })
+--vim.api.nvim_create_autocmd("VimEnter", {
+--  group = "StartupSplits",
+--  callback = function()
+--    vim.cmd("vsplit")
+--    vim.cmd("wincmd h")
+--    vim.cmd("vertical resize 105")
+--  end,
+--})
+
+vim.keymap.set('n', '<Tab>', '<C-w>w', { noremap = true, silent = true })
+
+local function open_header_or_source()
+    local current = vim.fn.expand('%:t')         -- filename.ext
+    local dir = vim.fn.expand('%:p:h')           -- full directory
+    local ext = vim.fn.expand('%:e')             -- extension
+    local base = vim.fn.expand('%:t:r')          -- filename (no extension)
+    local target = nil
+
+    local curwin = vim.api.nvim_get_current_win()
+    --vim.cmd('wincmd w')
+
+    if ext == 'cpp' or ext == 'c' then
+        target = dir .. '/' .. base .. '.h'
+    elseif ext == 'h' then
+        local cpp_target = dir .. '/' .. base .. '.cpp'
+        local c_target = dir .. '/' .. base .. '.c'
+        
+        if vim.fn.filereadable(cpp_target) == 1 then
+          target = cpp_target
+        else
+          target = c_target
+        end
+    end
+
+    if target and vim.fn.filereadable(target) == 1 then
+        vim.cmd('edit ' .. target)
+    else
+        print('Counterpart file not found: ' .. (target or 'unknown'))
+    end
+
+    vim.api.nvim_set_current_win(curwin)
+end
+
+--Allows to open .h from .cpp or vice versa either in next pane or in current, if none are open except for current
+vim.keymap.set('n', '<leader>hh', open_header_or_source, { noremap = true, silent = true, desc = "Switch between .cpp/.h in vsplit" })
+
+-- Enable persistent undo and set a directory for undo files
+vim.cmd('set undofile')
+vim.cmd('set undodir=~/.nvim/undodir')
