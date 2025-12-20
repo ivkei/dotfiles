@@ -11,3 +11,13 @@ export CXX=$(which clang++)
 function fish_greeting
   cat ~/reminders.txt
 end
+
+export WALLPAPER_DIR=/home/ivan/custom/wallpaper
+
+function gimpmath
+  gimp ~/gimpmath/*.xcf
+end
+
+function gimpfund
+  gimp ~/gimpfundamentals/*.xcf
+end

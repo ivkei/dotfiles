@@ -6,6 +6,12 @@ vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'none' })
 vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'none' })
 
+-- Folds
+vim.opt.foldlevel = 20
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.number = true
+
 -- Sets
 vim.opt.relativenumber = true
 vim.opt.number = true
@@ -33,8 +39,6 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.g.mapleader = " "
-
-vim.opt.clipboard = 'unnamedplus'
 
 vim.opt.signcolumn = 'no'
 

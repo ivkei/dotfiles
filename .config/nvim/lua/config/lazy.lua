@@ -47,26 +47,25 @@ require("lazy").setup({
 			    ensure_installed = { "c", "lua", "cpp", "c_sharp", "python", "haskell", "glsl", "cmake", "markdown" },
 			    sync_install = false,
 			    highlight = { enable = true },
-			    indent = { enable = true },  
+			    indent = { enable = true },
 		    })
-	    end
-    },
-    {
-      "neovim/nvim-lspconfig", 
+	    end,
     },
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/nvim-cmp'},
     {
     	"williamboman/mason.nvim",
     	"williamboman/mason-lspconfig.nvim",
+    },
+    {
     	"neovim/nvim-lspconfig",
     },
-    { 'echasnovski/mini.files', version = '*' },
-    { 'echasnovski/mini.icons', version = '*' },
     {
       'nvim-lualine/lualine.nvim',
       dependencies = { 'nvim-tree/nvim-web-devicons' },
     },
+    { 'echasnovski/mini.files', version = '*' },
+    { 'echasnovski/mini.icons', version = '*' },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
@@ -75,49 +74,57 @@ require("lazy").setup({
   checker = { enabled = true, notify = false },
 })
 
-require('mini.files').setup({
-  -- Customization of shown content
-  content = {
-    -- Predicate for which file system entries to show
-    filter = nil,
-    -- What prefix to show to the left of file system entry
-    prefix = nil,
-    -- In which order to show file system entries
-    sort = nil,
-  },
+-- Colorscheme
+vim.cmd.colorscheme "retrobox"
 
-  -- General options
-  options = {
-    -- Whether to delete permanently or move into module-specific trash
-    permanent_delete = false,
-    -- Whether to use for editing directories
-    use_as_default_explorer = false,
-  },
-
-  -- Customization of explorer windows
-  windows = {
-    max_number = 3,
-    preview = false,
-    width_focus = 30,
-    width_nofocus = 20,
-    side = 'left',
-  },
-})
+require('mini.files').setup()
 vim.keymap.set('n', '<leader>mf', function()
   require('mini.files').open()
 end, { desc = 'Open mini.files' })
 
 require('mini.icons').setup()
 
--- Colorscheme
-vim.cmd.colorscheme "tokyonight-night"
+local normal_hl = vim.api.nvim_get_hl_by_name("Normal", true)
+local colors = {
+  --BG = '#16181b', -- Dark background
+  BG = string.format("#%06x", normal_hl.background or 0x000000),
+  --FG = '#c5c4c4', -- Light foreground for contrast
+  FG = string.format("#%06x", normal_hl.foreground or 0xFFFFFF),
+  YELLOW = '#e8b75f', -- Vibrant yellow
+  CYAN = '#00bcd4', -- Soft cyan
+  DARKBLUE = '#2b3e50', -- Deep blue
+  GREEN = '#00e676', -- Bright green
+  ORANGE = '#ff7733', -- Warm orange
+  VIOLET = '#7a3ba8', -- Strong violet
+  MAGENTA = '#d360aa', -- Deep magenta
+  BLUE = '#4f9cff', -- Light-medium blue
+  RED = '#ff3344', -- Strong red
+}
+
+local theme = {
+  -- Define the common active mode colors
+  active_sections = {
+      a = { fg = colors.FG, bg = colors.BG, gui = "bold" },
+      b = { fg = colors.FG, bg = colors.BG },
+      c = { fg = colors.FG, bg = colors.BG },
+      x = { fg = colors.FG, bg = colors.BG },
+      y = { fg = colors.FG, bg = colors.BG },
+      z = { fg = colors.FG, bg = colors.BG },
+  },
+}
+
+-- Use a loop to apply the 'active_sections' to all active modes
+for _, mode in ipairs({"normal", "insert", "visual", "replace", "command", "inactive"}) do
+    theme[mode] = theme.active_sections
+end
 
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = auto,
+    theme = theme,
     --component_separators = { left = '', right = ''},
-    component_separators = { left = '|', right = '||'},
+    --component_separators = { left = '|', right = '||'},
+    component_separators = { left = '|', right = '|'},
     --section_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {
@@ -137,7 +144,7 @@ require('lualine').setup {
   sections = {
     --lualine_a = {'mode'},
     lualine_a = {},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_b = {},
     lualine_c = {
       {
         "filename",
@@ -150,7 +157,22 @@ require('lualine').setup {
     --lualine_y = {'location'},
     lualine_x = {},
     lualine_y = {},
-    lualine_z = {},
+    lualine_z = {
+      {
+        'branch',
+        icon = '',
+      },
+      {
+        'diff',
+        symbols = { added = '+', modified = '~', removed = '-' },
+        diff_color = {
+          added = { fg = colors.GREEN },
+          modified = { fg = colors.YELLOW },
+          removed = { fg = colors.RED },
+        },
+      },
+      'diagnostics'
+    },
     --lualine_z = {
     --  {
     --    function()
@@ -177,8 +199,6 @@ require('lualine').setup {
   extensions = {}
 }
 
---Set indent size of enter
--- Set up the autocommand using Treesitter for detection
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   callback = function()
       vim.bo.tabstop = 2
