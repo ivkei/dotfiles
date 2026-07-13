@@ -9,7 +9,7 @@ export CC=$(which clang)
 export CXX=$(which clang++)
 
 function fish_greeting
-  cat ~/reminders.txt
+  cat ~/plans/reminders.md
 end
 
 export WALLPAPER_DIR=/home/ivan/custom/wallpaper
@@ -20,4 +20,27 @@ end
 
 function gimpfund
   gimp ~/gimpfundamentals/*.xcf
+end
+
+function reflect
+  echo "
+     _____  _____   _____ _      _____  _____  _____ 
+    |  __ \| ____| |  ___| |    | ____|| ____||_   _|
+    | |__) |  _|   | |_  | |    |  _|  | |      | |  
+    |  _  /| |___  |  _| | |___ | |___ | |___   | |  
+    |_| \_\|_____| |_|   |_____||_____||_____|  |_| 
+
+    "
+end
+
+function fff
+  ~/.config/custom/fff.sh
+end
+
+function ffd
+  ~/.config/custom/ffd.sh
+end
+
+function ffg
+  ~/.config/custom/ffg.sh
 end

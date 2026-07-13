@@ -33,21 +33,22 @@ require("lazy").setup({
 	    opts = {},
     },
     {
-	    'nvim-telescope/telescope.nvim', tag = '0.1.8',
+	    'nvim-telescope/telescope.nvim', 
+      --tag = '0.1.8',
 	    -- or                              , branch = '0.1.x',
 	    dependencies = { 'nvim-lua/plenary.nvim' }
     },
     {
 	    "nvim-treesitter/nvim-treesitter",
+      branch = "main",
 	    build = ":TSUpdate",
 	    config = function () 
-		    local configs = require("nvim-treesitter.configs")
 
-		    configs.setup({
+		    require("nvim-treesitter").setup({
 			    ensure_installed = { "c", "lua", "cpp", "c_sharp", "python", "haskell", "glsl", "cmake", "markdown" },
 			    sync_install = false,
 			    highlight = { enable = true },
-			    indent = { enable = true },
+			    indent = { enable = false },
 		    })
 	    end,
     },

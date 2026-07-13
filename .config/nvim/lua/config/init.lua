@@ -17,6 +17,22 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' 
 -- This will avoid an annoying layout shift in the screen
 vim.opt.signcolumn = 'yes'
 
+--Folds
+vim.api.nvim_create_autocmd({'FileType'}, {
+  pattern = { "*" },
+  callback = function()
+    vim.opt.foldlevel=99
+    vim.opt.foldlevelstart=99
+    vim.opt.foldmethod = "expr"
+    vim.opt.foldexpr = "v:lua.vim.lsp.foldexpr()"
+    vim.opt.number = true
+    vim.opt.foldcolumn = "0"
+    vim.opt.foldopen = "undo,tag"
+    -- Close all folds without touching foldlevel
+    vim.keymap.set("n", "zM", ":%foldclose<CR>", { silent = true, desc = "Fold everything without changing foldlevel" })
+  end
+})
+
 -- Add cmp_nvim_lsp capabilities settings to lspconfig
 -- This should be executed before you configure any language server
 local lspconfig_defaults = require('lspconfig').util.default_config

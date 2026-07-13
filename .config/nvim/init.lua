@@ -6,12 +6,6 @@ vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'none' })
 vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'none' })
 
--- Folds
-vim.opt.foldlevel = 20
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.number = true
-
 -- Sets
 vim.opt.relativenumber = true
 vim.opt.number = true
@@ -42,20 +36,20 @@ vim.g.mapleader = " "
 
 vim.opt.signcolumn = 'no'
 
--- Split on startup
---vim.api.nvim_create_augroup("StartupSplits", { clear = true })
---vim.api.nvim_create_autocmd("VimEnter", {
---  group = "StartupSplits",
---  callback = function()
---    vim.cmd("vsplit")
---    vim.cmd("wincmd h")
---    vim.cmd("vertical resize 105")
---  end,
---})
+--Split on startup
+-- vim.api.nvim_create_augroup("StartupSplits", { clear = true })
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--   group = "StartupSplits",
+--   callback = function()
+--     vim.cmd("vsplit")
+--     vim.cmd("wincmd h")
+--     --vim.cmd("vertical resize 105")
+--   end,
+-- })
 
 vim.keymap.set('n', '<Tab>', '<C-w>w', { noremap = true, silent = true })
 
-local function open_header_or_source()
+local function open_header_or_source(open_in_next)
     local current = vim.fn.expand('%:t')         -- filename.ext
     local dir = vim.fn.expand('%:p:h')           -- full directory
     local ext = vim.fn.expand('%:e')             -- extension
@@ -63,7 +57,9 @@ local function open_header_or_source()
     local target = nil
 
     local curwin = vim.api.nvim_get_current_win()
-    --vim.cmd('wincmd w')
+    if open_in_next then
+      vim.cmd('wincmd w')
+    end
 
     if ext == 'cpp' or ext == 'c' then
         target = dir .. '/' .. base .. '.h'
@@ -87,8 +83,18 @@ local function open_header_or_source()
     vim.api.nvim_set_current_win(curwin)
 end
 
---Allows to open .h from .cpp or vice versa either in next pane or in current, if none are open except for current
-vim.keymap.set('n', '<leader>hh', open_header_or_source, { noremap = true, silent = true, desc = "Switch between .cpp/.h in vsplit" })
+--Allows to open .h from .cpp or vice versa either in next pane or in current
+vim.keymap.set('n', '<leader>hh', function()
+  open_header_or_source(false)
+end, { noremap = true, silent = true, desc = "Switch between .cpp/.h in vsplit" })
+--Next pane; if only 1, create one more
+vim.keymap.set('n', '<leader>hn', function()
+  -- Gets the total number of panes in the current tab page
+  local pane_count = #vim.api.nvim_tabpage_list_wins(0)
+  if pane_count == 1 then vim.cmd("vsplit") end
+
+  open_header_or_source(true)
+end, { noremap = true, silent = true, desc = "Switch between .cpp/.h in vsplit" })
 
 -- Enable persistent undo and set a directory for undo files
 vim.cmd('set undofile')
