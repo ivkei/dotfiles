@@ -34,13 +34,19 @@ function reflect
 end
 
 function fff
+  # Dont wrap into nvim because otherwise it opens even if esc was pressed
   ~/.config/custom/fff.sh
 end
 
 function ffd
-  ~/.config/custom/ffd.sh
+  cd $(~/.config/custom/ffd.sh)
 end
 
 function ffg
+  # Dont wrap into nvim because it cant handle line number that way
   ~/.config/custom/ffg.sh
+end
+
+function ffw
+  ~/.config/custom/ffw.sh
 end
