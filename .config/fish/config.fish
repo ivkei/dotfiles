@@ -2,7 +2,7 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME ; set -gx PATH $HOME/.cabal/bin $PATH /home/ivan/.ghcup/bin # ghcup-env
+set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME ; set -gx PATH $HOME/.cabal/bin $PATH $HOME/.ghcup/bin # ghcup-env
 
 # Set default C and C++ compilers
 export CC=$(which clang)
@@ -12,7 +12,7 @@ function fish_greeting
   cat ~/plans/reminders.md
 end
 
-export WALLPAPER_DIR=/home/ivan/custom/wallpaper
+export WALLPAPER_DIR=$HOME/custom/wallpaper
 
 function gimpmath
   gimp ~/gimpmath/*.xcf
