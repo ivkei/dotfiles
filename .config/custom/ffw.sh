@@ -16,9 +16,9 @@ if [ -n "$choice" ]; then
   real_cmd="${choice:4}"
 
   if [[ "$choice" == "[G]"* ]]; then
-    gtk-launch "$real_cmd" &> /dev/null
+    hyprctl dispatch "hl.dsp.exec_cmd('gtk-launch "$real_cmd"')" &> /dev/null
   elif [[ "$choice" == "[W]"* ]]; then
-    hyprctl dispatch focuswindow "title:^${real_cmd}$" &> /dev/null
+    hyprctl dispatch "hl.dsp.focus({ window = 'title:^${real_cmd}$' })" &> /dev/null
   else
     exec $real_cmd
   fi

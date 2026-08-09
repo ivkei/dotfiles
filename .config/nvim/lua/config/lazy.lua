@@ -24,20 +24,43 @@ vim.g.maplocalleader = "\\"
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    -- import your plugins
-    --{ import = "plugins" },
-    {
-	    "folke/tokyonight.nvim",
-	    lazy = false,
-	    priority = 1000,
-	    opts = {},
+    --Files
+    { -- fzf
+      'junegunn/fzf.vim',
+      dependencies = {
+        'junegunn/fzf'
+      },
+      config = function()
+        vim.g.fzf_layout = {
+          window = {
+            width = 0.8,
+            height = 0.8,
+            border = "rounded",
+          }
+        },
+        vim.keymap.set("n", "<leader>ff", ":Files<CR>")
+        vim.keymap.set("n", "<leader>fb", ":Buffers<CR>")
+        vim.keymap.set("n", "<leader>fg", ":Rg<CR>") --Need ripgrep
+        --Tab
+        vim.env.FZF_DEFAULT_OPTS = "--bind=tab:up,btab:down"
+      end,
     },
-    {
-	    'nvim-telescope/telescope.nvim', 
-      --tag = '0.1.8',
-	    -- or                              , branch = '0.1.x',
-	    dependencies = { 'nvim-lua/plenary.nvim' }
+    { --NerdTree
+      'preservim/nerdtree',
+      config = function()
+        vim.keymap.set("n", "<leader>mf", ":NERDTreeToggle<CR>") --Need ripgrep
+        vim.g.NERDTreeShowHidden = 1
+        vim.g.NERDTreeWinPos = "right"
+        vim.g.NERDTreeQuitOnOpen = 1
+      end,
     },
+
+    --Visual
+    {
+      'nvim-lualine/lualine.nvim',
+    },
+
+    --LSP & syntax
     {
 	    "nvim-treesitter/nvim-treesitter",
       branch = "main",
@@ -45,7 +68,7 @@ require("lazy").setup({
 	    config = function () 
 
 		    require("nvim-treesitter").setup({
-			    ensure_installed = { "c", "lua", "cpp", "c_sharp", "python", "haskell", "glsl", "cmake", "markdown" },
+			    ensure_installed = { "c", "lua", "cpp", "python", "haskell", "glsl", "cmake", "markdown" },
 			    sync_install = false,
 			    highlight = { enable = true },
 			    indent = { enable = false },
@@ -61,29 +84,16 @@ require("lazy").setup({
     {
     	"neovim/nvim-lspconfig",
     },
-    {
-      'nvim-lualine/lualine.nvim',
-      dependencies = { 'nvim-tree/nvim-web-devicons' },
-    },
-    { 'echasnovski/mini.files', version = '*' },
-    { 'echasnovski/mini.icons', version = '*' },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "habamax" } },
+  install = { colorscheme = { "retrobox" } },
   -- automatically check for plugin updates
-  checker = { enabled = true, notify = false },
+  -- checker = { enabled = true, notify = false },
 })
 
 -- Colorscheme
 vim.cmd.colorscheme "retrobox"
-
-require('mini.files').setup()
-vim.keymap.set('n', '<leader>mf', function()
-  require('mini.files').open()
-end, { desc = 'Open mini.files' })
-
-require('mini.icons').setup()
 
 local normal_hl = vim.api.nvim_get_hl_by_name("Normal", true)
 local colors = {
@@ -123,10 +133,7 @@ require('lualine').setup {
   options = {
     icons_enabled = true,
     theme = theme,
-    --component_separators = { left = '', right = ''},
-    --component_separators = { left = '|', right = '||'},
     component_separators = { left = '|', right = '|'},
-    --section_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {
       statusline = {},
@@ -143,9 +150,9 @@ require('lualine').setup {
     }
   },
   sections = {
-    --lualine_a = {'mode'},
     lualine_a = {},
-    lualine_b = {},
+    lualine_b = {
+    },
     lualine_c = {
       {
         "filename",
@@ -154,10 +161,8 @@ require('lualine').setup {
         shorting_target = 0,
       }
     },
-    --lualine_x = {'encoding'},
-    --lualine_y = {'location'},
     lualine_x = {},
-    lualine_y = {},
+    lualine_y = {'location'},
     lualine_z = {
       {
         'branch',
@@ -174,22 +179,11 @@ require('lualine').setup {
       },
       'diagnostics'
     },
-    --lualine_z = {
-    --  {
-    --    function()
-    --      return os.date("%I:%M:%S")
-    --    end,
-    --    --color = { fg = "#FFFFFF", bg = nil },
-    --    --separator = '',
-    --    --padding = 0,
-    --  }
-    --},
   },
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
     lualine_c = {'filename'},
-    --lualine_x = {'location'},
     lualine_x = {},
     lualine_y = {},
     lualine_z = {}

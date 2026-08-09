@@ -6,12 +6,6 @@ vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.g.netrw_banner = 0             -- Disable the banner
 
--- Telescope
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
-vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
-
 -- LSP
 -- Reserve a space in the gutter
 -- This will avoid an annoying layout shift in the screen
@@ -51,14 +45,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     vim.keymap.set('n', '<leader>k', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
     vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-    vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-    vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-    vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
     vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-    vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-    vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-    vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-    vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+    vim.keymap.set('n', 'gR', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
+    vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
   end,
 })
 
@@ -102,28 +91,12 @@ vim.diagnostic.config({
 -- Go to error descriptions
 vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
 
--- Close the floating windows on escape or mini.files
-vim.keymap.set("n", "<esc>", function()
-    -- Check if mini.files is active
-    local ok, mini_files = pcall(require, "mini.files")
-    if ok and mini_files.is_open then
-        mini_files.close() -- Close mini.files if it's open
-    else
-        -- Close floating windows
-        for _, win in ipairs(vim.api.nvim_list_wins()) do
-            if vim.api.nvim_win_get_config(win).relative ~= "" then
-                vim.api.nvim_win_close(win, false)
-            end
-        end
-    end
-end)
-
 -- Setup LSPs
 require('mason').setup({})
 require('mason-lspconfig').setup({
   -- Replace the language servers listed here
   -- with the ones you want to install
-  ensure_installed = { "omnisharp", "clangd", "pyright", "hls" },
+  ensure_installed = { "clangd", "pyright", "hls" },
   handlers = {
     function(server_name)
       require('lspconfig')[server_name].setup({})
@@ -145,3 +118,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 --Disable auto comment on next line
 vim.cmd('autocmd BufEnter * set formatoptions-=cro')
 vim.cmd('autocmd BufEnter * setlocal formatoptions-=cro')
+
+--Inlay hints
+vim.keymap.set('n', '<leader>th', function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end)
