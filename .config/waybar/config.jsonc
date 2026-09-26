@@ -4,7 +4,7 @@
   "output": "HDMI-A-1",
   "width": 1920, // Waybar width
   "margin-bottom": 0,
-  "modules-left": ["cpu", "memory", "custom/gpu", "custom/gpu-memory", "network", "pulseaudio", "bluetooth"],
+  "modules-left": ["cpu", "memory", "custom/gpu", "custom/gpu-memory", "network", "pulseaudio"],
   "modules-center": [],
   "modules-right": ["tray", "clock"],
 
@@ -68,8 +68,8 @@
     // Show a distinct icon and label when muted
     "format-muted": "",
 
-    "format-bluetooth": "{icon} {volume}% {format_source}",
-    "format-bluetooth-muted": " {format_source}",
+    "format-bluetooth": " {icon} {volume}%",
+    "format-bluetooth-muted": " ",
 
     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "format-icons": {
