@@ -1,0 +1,93 @@
+{
+  "layer": "dock", // Waybar at top layer
+  "position": "top", // Waybar position (top|bottom|left|right)
+  "output": "HDMI-A-1",
+  "width": 1920, // Waybar width
+  "margin-bottom": 0,
+  "modules-left": ["cpu", "memory", "custom/gpu", "custom/gpu-memory", "network", "pulseaudio", "bluetooth"],
+  "modules-center": [],
+  "modules-right": ["tray", "clock"],
+
+  "tray": {
+    "spacing": 10
+  },
+
+  "clock": {
+    "format": " {:%I:%M:%S - %a - %m/%d/%Y}",
+    "interval": 1
+  },
+
+  "cpu": {
+    "interval": 1,
+    "format": " {}%",
+    "max-length": 10
+  },
+
+  "memory": {
+    "interval": 1,
+    "format": " {}%",
+    "max-length": 10
+  },
+
+  "custom/gpu": {
+    "interval": 1,
+    "format": "󰢮 {}%",
+    "max-length": 10,
+    "exec": "~/.config/custom/curgpu.sh"
+  },
+  "custom/gpu-memory": {
+    "interval": 1,
+    "format": " {}%",
+    "max-length": 10,
+    "exec": "~/.config/custom/curvram.sh"
+  },
+
+  "network": {
+    "format-wifi": "  {essid} ({signalStrength}%)",
+    "format-ethernet": " {ifname}",
+    "format-disconnected": "Disconnected ⚠"
+  },
+
+  "battery": {
+    "states": {
+      //"good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon}   {capacity}%",
+    "format-charging": "  {capacity}%",
+    "format-plugged": "  {capacity}%",
+    "format-icons": [" ", " ", " ", " ", " "]
+  },
+
+  "pulseaudio": {
+    "tooltip": false,
+    "scroll-step": 5,
+    // Show a nice icon and the volume percentage
+    "format": "{icon} {volume}%",
+    // Show a distinct icon and label when muted
+    "format-muted": "",
+
+    "format-bluetooth": "{icon} {volume}% {format_source}",
+    "format-bluetooth-muted": " {format_source}",
+
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "format-icons": {
+        "muted": "",      // nf-md-volume_variant_off
+        "low": "",        // fa-volume-down
+        "medium": "",     // fa-volume-up
+        "high": "",       // fa-volume-up (you can use a different high-volume icon if desired)
+        "default": ["", "", ""] // fallback sequence: fa-volume-off, fa-volume-down, fa-volume-up
+    }
+  },
+
+  "bluetooth": {
+    "format-disabled": "",
+    "format-off": "",
+    "format": "",
+    "interval": 30,
+    "on-click": "blueman-manager",
+    "tooltip": false
+  }
+
+}

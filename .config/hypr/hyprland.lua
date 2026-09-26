@@ -21,6 +21,7 @@ hl.on("hyprland.start", function ()
   hl.exec_cmd("~/.config/custom/switchwallpaper.sh &")
   hl.exec_cmd("alacritty --command tmux", {workspace = 1})
   hl.exec_cmd("firefox")
+  hl.exec_cmd("waybar")
 end)
 
 -- Enviroment variables
