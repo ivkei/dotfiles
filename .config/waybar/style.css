@@ -9,9 +9,9 @@
 
 /* Continuous dark top bar */
 window#waybar {
-  background-color: rgba(18, 18, 18, 1); /* Deep dark purple/black */
+  background-color: rgba(18, 18, 18, 0.5); /* Deep dark purple/black */
   color: #cdd6f4;
-  border-bottom: 1px solid rgba(125, 125, 125, 0.5); /* Subtle bottom edge */
+  border-bottom: 1px solid rgba(125, 125, 125, 0.5);
 }
 
 /* Base spacing for all modules - transparent backgrounds */

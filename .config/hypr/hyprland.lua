@@ -60,7 +60,7 @@ hl.config({
 
   decoration = {
     rounding = 0,
-    rounding_power = 2,
+    rounding_power = 10,
 
     shadow = {
       enabled = false,
@@ -74,10 +74,10 @@ hl.config({
     inactive_opacity = 0.98,
 
     blur = {
-      enabled = false,
-      size = 0,
-      passes = 4,
-      vibrancy = 0.5,
+      enabled = true,
+      size = 1,
+      passes = 2,
+      vibrancy = 1.0,
     },
   },
 
